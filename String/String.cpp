@@ -56,6 +56,7 @@ void String::setData(const char *str) {
         useOptimisation(0);
         return;
     }
+
     size_t len = strlen(str);
 
     if (len <= ssoCapacity) {
@@ -66,14 +67,14 @@ void String::setData(const char *str) {
 
     if (len <= capacity()) {
         strcpy(dynamicStr(), str);
-        useDynamicStr(len, capacity() + 1);
+        useDynamicStr(len, capacity());
         return;
     }
 
     free();
-    dynamicStr() = new char[len + 1];
+    dynamicStr() = new char[len + ssoCapacity + 1];
     strcpy(dynamicStr(), str);
-    useDynamicStr(len, len + ssoCapacity + 1);
+    useDynamicStr(len, len + ssoCapacity);
 }
 
 void String::useOptimisation(size_t size) {
@@ -83,7 +84,7 @@ void String::useOptimisation(size_t size) {
 
 void String::useDynamicStr(size_t size, size_t capacity) {
     data.dynamicStr.size = size;
-    data.dynamicStr.capacity = capacity;
+    data.dynamicStr.capacity = capacity + 1;
     BitManipulation::setLeftmostBit(staticStr()[ssoCapacity]);
 }
 
@@ -105,7 +106,7 @@ void String::copyFrom(const String &other) {
     } else {
         dynamicStr() = new char[other.capacity() + 1];
         strcpy(dynamicStr(), other.c_str());
-        useDynamicStr(other.length(), other.capacity() + 1);
+        useDynamicStr(other.length(), other.capacity());
     }
 }
 
@@ -198,7 +199,7 @@ String &String::operator+=(const String &other) {
 
     if (newLen <= capacity()) {
         strcat(dynamicStr(), other.c_str());
-        useDynamicStr(newLen, capacity() + 1);
+        useDynamicStr(newLen, capacity());
         return *this;
     }
 
@@ -209,7 +210,7 @@ String &String::operator+=(const String &other) {
 
     free();
     dynamicStr() = newData;
-    useDynamicStr(newLen, newLen + ssoCapacity + 1);
+    useDynamicStr(newLen, newLen + ssoCapacity);
     return *this;
 }
 
@@ -225,7 +226,7 @@ String &String::operator+=(char c) {
     if (newLen <= capacity()) {
         dynamicStr()[newLen - 1] = c;
         dynamicStr()[newLen] = '\0';
-        useDynamicStr(newLen, capacity() + 1);
+        useDynamicStr(newLen, capacity());
         return *this;
     }
 
@@ -236,7 +237,7 @@ String &String::operator+=(char c) {
 
     free();
     dynamicStr() = newData;
-    useDynamicStr(newLen, newLen + ssoCapacity + 1);
+    useDynamicStr(newLen, newLen + ssoCapacity);
     return *this;
 }
 
@@ -245,17 +246,21 @@ String operator+(const String &lhs, const String &rhs) {
 
     if (len <= String::ssoCapacity) {
         String res(len);
+
         strcat(res.staticStr(), lhs.c_str());
         strcat(res.staticStr(), rhs.c_str());
+
         res.useOptimisation(len);
         return res;
     }
+
     size_t capacity = lhs.capacity() + rhs.capacity();
     String res(capacity);
 
     strcat(res.dynamicStr(), lhs.c_str());
     strcat(res.dynamicStr(), rhs.c_str());
-    res.useDynamicStr(len, capacity + 1);
+    res.useDynamicStr(len, capacity);
+
     return res;
 }
 
