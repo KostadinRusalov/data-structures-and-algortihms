@@ -279,32 +279,32 @@ typename Vector<T>::pointer Vector<T>::data() noexcept {
 // MARK: iterators -i
 template<class T>
 typename Vector<T>::const_iterator Vector<T>::begin() const noexcept {
-    return const_iterator(data_[0]);
+    return const_iterator(data_);
 }
 
 template<class T>
 typename Vector<T>::iterator Vector<T>::begin() noexcept {
-    return iterator(data_[0]);
+    return iterator(data_);
 }
 
 template<class T>
 typename Vector<T>::const_iterator Vector<T>::cbegin() const noexcept {
-    return const_iterator(data_[0]);
+    return const_iterator(data_);
 }
 
 template<class T>
 typename Vector<T>::const_iterator Vector<T>::end() const noexcept {
-    return const_iterator(data_[size_]);
+    return const_iterator(&data_[size_]);
 }
 
 template<class T>
 typename Vector<T>::iterator Vector<T>::end() noexcept {
-    return iterator(data_[size_]);
+    return iterator(&data_[size_]);
 }
 
 template<class T>
 typename Vector<T>::const_iterator Vector<T>::cend() const noexcept {
-    return const_iterator(data_[size_]);
+    return const_iterator(&data_[size_]);
 }
 
 // MARK: capacity -i
