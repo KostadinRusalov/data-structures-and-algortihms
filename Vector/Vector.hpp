@@ -23,7 +23,7 @@ private:
     size_type size_;
     size_type capacity_;
 
-    static const short INITIAL_CAPACITY = 4;
+    static const short INITIAL_CAPACITY = 2;
 public:
     // MARK: big 6 -d
     Vector();
@@ -339,13 +339,27 @@ typename Vector<T>::iterator Vector<T>::insert(Vector<T>::const_iterator pos, co
 
 template<class T>
 typename Vector<T>::iterator Vector<T>::erase(Vector::const_iterator pos) {
+    difference_type dist = pos - cbegin();
+    iterator el = begin() + dist;
 
+    if (el == end() - 1) {
+        *el = T();
+        size_--;
+        return end();
+    }
+
+    iterator last = end() - 1;
+    for (auto it = el; it != last; ++it) {
+        *it = std::move(*(it + 1));
+    }
+    size_--;
+    return end();
 }
 
 template<class T>
 void Vector<T>::pushBack(const T &value) {
     if (capacity_ == 0) {
-        resize(2);
+        resize(INITIAL_CAPACITY);
     }
     if (size_ == capacity_) {
         resize(2 * capacity_);
@@ -357,7 +371,7 @@ void Vector<T>::pushBack(const T &value) {
 template<class T>
 void Vector<T>::pushBack(T &&value) {
     if (capacity_ == 0) {
-        resize(2);
+        resize(INITIAL_CAPACITY);
     }
     if (size_ == capacity_) {
         resize(2 * capacity_);
