@@ -94,17 +94,17 @@ public:
     // MARK: modifiers -d
     void clear() noexcept;
 
-    iterator insert(const_iterator pos, const T &value);
-
-    iterator insert(const_iterator pos, T &&value);
-
-    iterator insert(const_iterator pos, size_t count, const T &value);
-
-    iterator insert(const_iterator pos, std::initializer_list<T> ilist);
+//    iterator insert(const_iterator pos, const T &value);
+//
+//    iterator insert(const_iterator pos, T &&value);
+//
+//    iterator insert(const_iterator pos, size_t count, const T &value);
+//
+//    iterator insert(const_iterator pos, std::initializer_list<T> ilist);
 
     iterator erase(const_iterator pos);
 
-    iterator erase(const_iterator first, const_iterator last);
+//    iterator erase(const_iterator first, const_iterator last);
 
     void pushBack(const T &value);
 
@@ -332,10 +332,6 @@ void Vector<T>::clear() noexcept {
     size_ = 0;
 }
 
-template<class T>
-typename Vector<T>::iterator Vector<T>::insert(Vector<T>::const_iterator pos, const T &value) {
-
-}
 
 template<class T>
 typename Vector<T>::iterator Vector<T>::erase(Vector::const_iterator pos) {
