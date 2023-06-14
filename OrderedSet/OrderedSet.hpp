@@ -88,6 +88,9 @@ void OrderedSet<T>::clear() {
 
 template<class T>
 void OrderedSet<T>::add(const T &element) {
+    if (contains(element)) {
+        return;
+    }
     elements.pushBack(element);
     size_type last = elements.size() - 1;
 
@@ -103,6 +106,9 @@ void OrderedSet<T>::add(const T &element) {
 
 template<class T>
 void OrderedSet<T>::add(T &&element) {
+    if (contains(element)) {
+        return;
+    }
     elements.pushBack(std::move(element));
     size_type last = elements.size() - 1;
 
