@@ -137,11 +137,14 @@ bool OrderedSet<T>::contains(const T &element) const {
 
 template<class T>
 typename OrderedSet<T>::iterator OrderedSet<T>::find(const T &element) {
-    size_type left = 0;
-    size_type right = size() - 1;
+    if (empty()) {
+        return end();
+    }
+    int left = 0;
+    int right = size() - 1;
 
     while (left <= right) {
-        size_type mid = left + (right - left) / 2;
+        int mid = left + (right - left) / 2;
 
         if (elements[mid] == element) {
             return iterator(&elements[mid]);
@@ -157,11 +160,14 @@ typename OrderedSet<T>::iterator OrderedSet<T>::find(const T &element) {
 
 template<class T>
 typename OrderedSet<T>::const_iterator OrderedSet<T>::find(const T &element) const {
-    size_type left = 0;
-    size_type right = size() - 1;
+    if (empty()) {
+        return cend();
+    }
+    int left = 0;
+    int right = size() - 1;
 
     while (left <= right) {
-        size_type mid = left + (right - left) / 2;
+        int mid = left + (right - left) / 2;
 
         if (elements[mid] == element) {
             return const_iterator(&elements[mid]);
