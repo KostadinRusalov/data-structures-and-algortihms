@@ -137,9 +137,6 @@ bool OrderedSet<T>::contains(const T &element) const {
 
 template<class T>
 typename OrderedSet<T>::iterator OrderedSet<T>::find(const T &element) {
-    if (empty()) {
-        return end();
-    }
     int left = 0;
     int right = size() - 1;
 
@@ -160,9 +157,6 @@ typename OrderedSet<T>::iterator OrderedSet<T>::find(const T &element) {
 
 template<class T>
 typename OrderedSet<T>::const_iterator OrderedSet<T>::find(const T &element) const {
-    if (empty()) {
-        return cend();
-    }
     int left = 0;
     int right = size() - 1;
 
