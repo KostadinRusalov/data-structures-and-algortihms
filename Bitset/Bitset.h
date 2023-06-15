@@ -5,10 +5,10 @@
 
 class Bitset {
 public:
-    typedef uint64_t Bucket;
+    typedef uint32_t Bucket;
     typedef size_t size_type;
     typedef unsigned value_type;
-    typedef uint8_t position_idx;
+    typedef size_type position_idx;
 
     friend class BitsetIterator;
 
@@ -43,9 +43,6 @@ public:
     void clear();
 
     void add(value_type num);
-
-    template<class Collection>
-    void add(const Collection &collection);
 
     void remove(value_type num);
 

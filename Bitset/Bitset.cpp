@@ -59,21 +59,11 @@ void Bitset::clear() {
 
 void Bitset::add(Bitset::value_type num) {
     if (num >= max) {
-        resize(num);
+        resize(num + 1);
     }
-    size_type bucketIdx = bucket(num);
-    position_idx pos = position(num);
-
-    if (!(data[bucketIdx] & pos)) {
+    if (!contains(num)) {
         count++;
-    }
-    data[bucketIdx] |= pos;
-}
-
-template<class Collection>
-void Bitset::add(const Collection &collection) {
-    for (auto el: collection) {
-        add(el);
+        data[bucket(num)] |= position(num);
     }
 }
 
@@ -81,19 +71,17 @@ void Bitset::remove(Bitset::value_type num) {
     if (num >= max) {
         return;
     }
-    size_type bucketIdx = bucket(num);
-    position_idx pos = position(num);
-
-    if (data[bucketIdx] & pos) {
+    if (contains(num)) {
         count--;
+        data[bucket(num)] &= ~position(num);
     }
-    data[bucketIdx] &= ~pos;
 }
 
 bool Bitset::contains(Bitset::value_type num) const {
     if (num >= max) {
         return false;
     }
+
     return data[bucket(num)] & position(num);
 }
 
@@ -122,11 +110,12 @@ void Bitset::moveFrom(Bitset &&other) {
 }
 
 void Bitset::resize(Bitset::value_type newMax) {
-    if (newMax < max) {
+    if (bucket(newMax) <= bucketCount()) {
+        max = newMax;
         return;
     }
-    size_type oldCount = bucketCount();
 
+    size_type oldCount = bucketCount();
     max = newMax;
     auto temp = new Bucket[bucketCount()]{};
     for (size_type b = 0; b < oldCount; ++b) {
@@ -138,7 +127,7 @@ void Bitset::resize(Bitset::value_type newMax) {
 }
 
 Bitset::size_type Bitset::bucketCount() const {
-    return max / BUCKET_SIZE;
+    return 1 + max / BUCKET_SIZE;
 }
 
 Bitset::size_type Bitset::bucket(Bitset::value_type num) const {
