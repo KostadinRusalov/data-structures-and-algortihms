@@ -88,7 +88,6 @@ public:
 
     size_type size() const noexcept;
 
-
     size_type capacity() const noexcept;
 
     // MARK: modifiers -d
