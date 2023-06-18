@@ -110,6 +110,10 @@ void String::copyFrom(const String &other) {
     }
 }
 
+String::size_type String::size() const {
+    return length();
+}
+
 String::size_type String::length() const {
     if (isOptimised()) {
         return ssoCapacity - staticStr()[ssoCapacity];

@@ -84,6 +84,7 @@ public:
 
     void setData(const char *);
 
+    size_type size() const;
     size_type length() const;
 
     size_type capacity() const;
