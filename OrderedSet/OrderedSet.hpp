@@ -100,7 +100,7 @@ void OrderedSet<T>::add(const T &element) {
             break;
         }
 
-        Algorithm::swap(elements[last], elements[last - 1]);
+        kstd::swap(elements[last], elements[last - 1]);
         --last;
     }
 }
@@ -118,7 +118,7 @@ void OrderedSet<T>::add(T &&element) {
             break;
         }
 
-        Algorithm::swap(elements[last], elements[last - 1]);
+        kstd::swap(elements[last], elements[last - 1]);
         --last;
     }
 }
