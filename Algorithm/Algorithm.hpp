@@ -44,9 +44,9 @@ namespace kstd {
 
     template<class T>
     void swap(T &rhs, T &lhs) {
-        T copy(rhs);
-        rhs = lhs;
-        lhs = copy;
+        T copy = std::move(rhs);
+        rhs = std::move(lhs);
+        lhs = std::move(copy);
     }
 
     template<class InputIt, class OutputIt, class UnaryOperation>

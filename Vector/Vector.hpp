@@ -4,6 +4,7 @@
 #include <utility>
 #include <stdexcept>
 #include "VectorIterator.hpp"
+#include "Algorithm/Algorithm.hpp"
 
 template<class T>
 class Vector {
@@ -112,6 +113,8 @@ public:
     void popBack();
 
     void resize(size_t capacity);
+
+    void swap(const Vector<T> &other);
 
 private:
     // MARK: big 6 helpers -d
@@ -425,4 +428,11 @@ void Vector<T>::moveFrom(Vector<T> &&other) {
 
     data_ = other.data_;
     other.data_ = nullptr;
+}
+
+template<class T>
+void Vector<T>::swap(const Vector<T> &other) {
+    kstd::swap(capacity_, other.capacity_);
+    kstd::swap(size_, other.size_);
+    kstd::swap(data_, other.data_);
 }
