@@ -34,19 +34,19 @@ String::~String() {
 }
 
 // the wrappers
-char *String::staticStr() {
+String::pointer String::staticStr() {
     return data.staticStr;
 }
 
-const char *String::staticStr() const {
+String::const_pointer String::staticStr() const {
     return data.staticStr;
 }
 
-char *&String::dynamicStr() {
+String::const_pointer String::dynamicStr() const {
     return data.dynamicStr.data;
 }
 
-const char *String::dynamicStr() const {
+String::pointer &String::dynamicStr() {
     return data.dynamicStr.data;
 }
 
@@ -110,40 +110,40 @@ void String::copyFrom(const String &other) {
     }
 }
 
-size_t String::length() const {
+String::size_type String::length() const {
     if (isOptimised()) {
         return ssoCapacity - staticStr()[ssoCapacity];
     }
     return data.dynamicStr.size;
 }
 
-size_t String::capacity() const {
+String::size_type String::capacity() const {
     if (isOptimised()) {
         return ssoCapacity;
     }
     return BitManipulation::ignoreLeftmostBit(data.dynamicStr.capacity) - 1;
 }
 
-const char *String::c_str() const {
+String::const_pointer String::c_str() const {
     return isOptimised() ? staticStr() : dynamicStr();
 }
 
-char &String::operator[](size_t idx) {
+String::reference String::operator[](size_t idx) {
     return isOptimised() ? staticStr()[idx] : dynamicStr()[idx];
 }
 
-char String::operator[](size_t idx) const {
+String::value_type String::operator[](size_t idx) const {
     return isOptimised() ? staticStr()[idx] : dynamicStr()[idx];
 }
 
-char String::at(size_t idx) const {
+String::value_type String::at(size_t idx) const {
     if (idx >= length()) {
         throw std::out_of_range("Index is out of range!");
     }
     return operator[](idx);
 }
 
-char &String::at(size_t idx) {
+String::reference String::at(size_t idx) {
     if (idx >= length()) {
         throw std::out_of_range("Index is out of range!");
     }
@@ -169,6 +169,34 @@ String String::substr(size_t from, size_t size) {
 
     return res;
 }
+
+String::iterator String::begin() {
+    return isOptimised() ? staticStr() : dynamicStr();
+}
+
+String::const_iterator String::begin() const {
+    return isOptimised() ? staticStr() : dynamicStr();
+}
+
+String::const_iterator String::cbegin() const {
+    return isOptimised() ? staticStr() : dynamicStr();
+}
+
+String::iterator String::end() {
+    return isOptimised() ? iterator(&staticStr()[length()])
+                         : iterator(&dynamicStr()[length()]);
+}
+
+String::const_iterator String::end() const {
+    return isOptimised() ? const_iterator(&staticStr()[length()])
+                         : const_iterator(&dynamicStr()[length()]);
+}
+
+String::const_iterator String::cend() const {
+    return isOptimised() ? const_iterator(&staticStr()[length()])
+                         : const_iterator(&dynamicStr()[length()]);
+}
+
 
 String String::substr(size_t from) {
     return substr(from, length() - from);

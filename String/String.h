@@ -1,6 +1,7 @@
 #pragma once
 
 #include <iostream>
+#include "../ArrayIterator/ArrayIterator.hpp"
 
 /*
  * Small String Optimisation
@@ -22,6 +23,17 @@
  *
  */
 class String {
+public:
+    typedef char value_type;
+    typedef size_t size_type;
+    typedef ptrdiff_t difference_type;
+    typedef char &reference;
+    typedef const char &const_reference;
+    typedef char *pointer;
+    typedef const char *const_pointer;
+    typedef ArrayIterator<value_type> iterator;
+    typedef ArrayIterator<const value_type> const_iterator;
+
 private:
     union {
         struct {
@@ -36,13 +48,13 @@ private:
 
     // wrapper functions to call instead of
     // data.dynamicStr.data or data.staticStr
-    char *staticStr();
+    pointer staticStr();
 
-    const char *staticStr() const;
+    const_pointer staticStr() const;
 
-    const char *dynamicStr() const;
+    const_pointer dynamicStr() const;
 
-    char *&dynamicStr();
+    pointer &dynamicStr();
 
     // optimisation logic
     // the length and the capacity are set with these funcs
@@ -72,19 +84,31 @@ public:
 
     void setData(const char *);
 
-    size_t length() const;
+    size_type length() const;
 
-    size_t capacity() const;
+    size_type capacity() const;
 
-    const char *c_str() const;
+    const_pointer c_str() const;
 
-    char &operator[](size_t);
+    reference operator[](size_t);
 
-    char operator[](size_t) const;
+    value_type operator[](size_t) const;
 
-    char at(size_t) const;
+    value_type at(size_t) const;
 
-    char &at(size_t);
+    reference at(size_t);
+
+    iterator begin();
+
+    const_iterator begin() const;
+
+    const_iterator cbegin() const;
+
+    iterator end();
+
+    const_iterator end() const;
+
+    const_iterator cend() const;
 
     String substr(size_t, size_t);
 
